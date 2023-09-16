@@ -56,14 +56,14 @@ func (bc *Blockchain) AddBlock(transaction string, nonce int) *Block{ // adds a 
 		bc.NewestBlock=NewBlock(transaction, nonce, nil, "")
 		return bc.NewestBlock
 	}
-	// adding 
+	// adding subsequest transactions
 	blk:=NewBlock(transaction, nonce, bc.NewestBlock, bc.NewestBlock.currentHash)
 	bc.NewestBlock=blk;
 
 	return blk;
 }
 
-func (bc *Blockchain) ListBlocks(){
+func (bc *Blockchain) ListBlocks(){ // displaying entire blockchain in a nice format
 	iter:=bc.NewestBlock;
 	for iter.prevPtr!=nil {
 		iter.Print();
@@ -71,10 +71,10 @@ func (bc *Blockchain) ListBlocks(){
 	}
 }
 
-func (bc *Blockchain) Verify() bool{
+func (bc *Blockchain) Verify() bool{ // verifies that blockchain is intact 
 	iter:=bc.NewestBlock;
 	for iter.prevPtr!=nil {
-		if iter.prevPtr.currentHash!=iter.previousHash {
+		if iter.prevPtr.currentHash!=iter.previousHash { // iterates over blocks and compares hash of last block with stored hash of last block in current block 
 			return false
 		}
 		iter=iter.prevPtr
